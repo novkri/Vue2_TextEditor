@@ -1,37 +1,18 @@
 <template>
   <div id="app">
-    <!-- vue2-editor + quill based -->
-    <!-- <HelloWorld /> -->
 
-    <!-- tiptap -->
-    <!-- <VueEditorrTipTap /> -->
-
-    <!-- medium - Need running server! -->
-    <!-- <Medium /> -->
-
-    <!-- another quill based -->
     <QuillEd />
 
-    <!-- Editor.js based - Need running server! -->
-    <!-- <Editor /> -->
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-// import VueEditorrTipTap from './components/VueEditorr'
-// import Medium from './components/Medium'
 import QuillEd from './components/QuillEd'
-// import Editor from './components/Editor'
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
-    // VueEditorrTipTap
-    // Medium
     QuillEd
-    // Editor
   }
 }
 </script>
