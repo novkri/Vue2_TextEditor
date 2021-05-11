@@ -20,17 +20,17 @@
       <button id="header-2-button" @click="onHeaderTwoClick"><i class="fa fa-heading"><sub>2</sub></i></button>
     </div>
 
-    <!-- меню при переходе на новую строку -->
-    <div id="sidebar-controls" @blur="onShowControlsClick">
-      <button id="show-controls" @click="onShowControlsClick" >
+    <!-- меню при переходе на новую строку  @blur="closeShowControls"-->
+    <div id="sidebar-controls" >
+      <button id="show-controls" @click="onShowControlsClick" @blur="closeShowControls" >
         <i v-if="!isShowControlsClicked" class="fa fa-plus"></i>
         <i v-else class="fa fa-times"></i>
       </button>
       <span class="controls" v-show="isShowControlsClicked">
-        <button @click="onImageBtnClick"><i class="fa fa-camera"></i></button>
+        <button @mousedown="onImageBtnClick"><i class="fa fa-camera"></i></button>
         <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;">
-        <button id="video-button" @click="onVideoClick"><i class="fa fa-play"></i></button>
-        <button id="divider-button" @click="onDividerClick"><i class="fa fa-minus"></i></button>
+        <button id="video-button" @mousedown="onVideoClick"><i class="fa fa-play"></i></button>
+        <button id="divider-button" @mousedown="onDividerClick"><i class="fa fa-minus"></i></button>
       </span>
     </div>
 
@@ -313,10 +313,18 @@ export default {
     },
 
     // quill editor methods
-    onShowControlsClick() {
+    onShowControlsClick(e) {
+      console.log("click");
+      console.log(e);
       this.isShowControlsClicked = !this.isShowControlsClicked
       document.getElementById('show-controls').classList.toggle('active');
       document.getElementById('editor-container').focus()
+    },
+    closeShowControls() {
+      console.log('close');
+      this.isShowControlsClicked = false
+      // document.getElementById('show-controls').classList.toggle('active');
+      // document.getElementById('editor-container').focus()
     },
 
 
