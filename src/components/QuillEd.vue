@@ -22,7 +22,7 @@
 
     <!-- меню при переходе на новую строку -->
     <div id="sidebar-controls" >
-      <button id="show-controls" @click="onShowControlsClick">
+      <button id="show-controls" @click="onShowControlsClick" @blur="onShowControlsClick">
         <i v-if="!isShowControlsClicked" class="fa fa-plus"></i>
         <i v-else class="fa fa-times"></i>
       </button>
@@ -38,15 +38,13 @@
       <textarea placeholder="Название поста" style="height: 42px;" v-model="textHeader"></textarea>
     </div>
 
+
     <quill-editor
       id="editor-container"
       ref="myQuillEditor"
       v-model="content"
       :options="editorOption"
     />
-    <!--     @blur="onEditorBlur($event)"
-      @focus="onEditorFocus($event)"
-      @ready="onEditorReady($event)" -->
 
 
     <div id="bottom-menu">
@@ -83,15 +81,14 @@
 </template>
 
 <script>
-import { Quill, quillEditor } from 'vue-quill-editor'
+import { Quill } from 'vue-quill-editor'
+
+// ImageResize ломает редактор при выборе alignment картинки
 import ImageResize from 'quill-image-resize-vue';
 Quill.register('modules/imageResize', ImageResize);
 
 
 export default {
-  components: {
-    quillEditor,
-  },
   data () {
     return {
       // for render btn
@@ -100,11 +97,13 @@ export default {
       // quill editor
       isShowControlsClicked: false,
       textHeader: '',
-      content: '', // content: '<h2>I am Example</h2>',
+      content: '',
       editorOption: {
         placeholder: 'I am a placeholder!',
         modules: {
-          imageResize: {},
+          imageResize: {
+            modules: [ 'Resize', 'DisplaySize', ]
+          },
           toolbar: []
         }
       },
@@ -168,15 +167,21 @@ export default {
     class ImageBlot extends BlockEmbed {
       static create(value) {
         let node = super.create();
-        node.setAttribute('alt', value.alt);
+        // node.setAttribute('alt', value.alt);
         node.setAttribute('src', value.url);
+        if (node.width > 750) {
+          node.setAttribute('width', '750px');
+        }
+        node.setAttribute('style', 'display: block; margin: auto;');
         return node;
       }
       
       static value(node) {
         return {
-          alt: node.getAttribute('alt'),
-          url: node.getAttribute('src')
+          // alt: node.getAttribute('alt'),
+          url: node.getAttribute('src'),
+          width: node.getAttribute('width'),
+          style: node.getAttribute('style')
         };
       }
     }
@@ -184,11 +189,15 @@ export default {
     ImageBlot.tagName = 'img';
 
     class VideoBlot extends BlockEmbed {
+      // URL HAS TO BE: src="https://www.youtube.com/embed/c2SK1IlmYL8"
       static create(url) {
         let node = super.create();
         node.setAttribute('src', url);
         node.setAttribute('frameborder', '0');
         node.setAttribute('allowfullscreen', true);
+        if (node.width > 750) {
+          node.setAttribute('width', '750px')
+        }
         return node;
       }
       
@@ -339,10 +348,12 @@ export default {
       // let url = 'https://www.youtube.com/embed/QHH3iSeDBLo?showinfo=0';
       let url = prompt('Enter link URL');
 
-
-      this.editor.insertEmbed(range.index, 'video', url, Quill.sources.USER);
-      this.editor.formatText(range.index + 1, 1, { height: '170', width: '400' });
-      this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
+      if (url) {
+        this.editor.insertEmbed(range.index, 'video', url, Quill.sources.USER);
+        this.editor.formatText(range.index + 1, 1, { height: '170', width: '400' });
+        this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
+      }
+      
       document.getElementById('sidebar-controls').style.display = 'none';
     },
     onDividerClick() {
@@ -495,12 +506,10 @@ export default {
 .quill-wrapper {
   border: 1px solid rgba(65, 65, 65, 0.2);
   padding: 30px 45px;
+  max-width: 750px;
 }
 
-/* some quill.css file overwrites styles for editor in component */
 .quill-editor {
-  /* border: 1px solid rgba(65, 65, 65, 0.2); */
-  /* padding: 30px 45px; */
   padding: 0;
 }
 
@@ -516,8 +525,6 @@ export default {
   font-family: 'Open Sans', Helvetica, sans-serif !important;
   font-size: 1.2em !important;
   height: 100%;
-  /* margin: 0 auto; */
-  width: 750px;
 }
 #editor-container .ql-editor {
   min-height: 100%;
