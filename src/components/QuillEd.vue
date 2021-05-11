@@ -102,6 +102,7 @@ export default {
       textHeader: '',
       content: '',
       editorOption: {
+        debug: 'error',
         placeholder: 'I am a placeholder!',
         modules: {
           imageResize: {

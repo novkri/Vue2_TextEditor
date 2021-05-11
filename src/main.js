@@ -4,7 +4,7 @@ import App from './App.vue'
 Vue.config.productionTip = false
 
 import VueQuillEditor from 'vue-quill-editor'
-Vue.use(VueQuillEditor, /* { default global options } */)
+Vue.use(VueQuillEditor)
 
 
 new Vue({
