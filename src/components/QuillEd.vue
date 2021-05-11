@@ -21,8 +21,8 @@
     </div>
 
     <!-- меню при переходе на новую строку -->
-    <div id="sidebar-controls" >
-      <button id="show-controls" @click="onShowControlsClick" @blur="onShowControlsClick">
+    <div id="sidebar-controls" @blur="onShowControlsClick">
+      <button id="show-controls" @click="onShowControlsClick" >
         <i v-if="!isShowControlsClicked" class="fa fa-plus"></i>
         <i v-else class="fa fa-times"></i>
       </button>
@@ -106,7 +106,7 @@ export default {
         placeholder: 'I am a placeholder!',
         modules: {
           imageResize: {
-            modules: [ 'Resize', 'DisplaySize', ]
+            modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
           },
           toolbar: []
         }
@@ -173,6 +173,7 @@ export default {
         let node = super.create();
         // node.setAttribute('alt', value.alt);
         node.setAttribute('src', value.url);
+
         if (node.width > 750) {
           node.setAttribute('width', '750px');
         }
@@ -460,6 +461,10 @@ main.quill-container {
   height: inherit;
   overflow-y: inherit;
   padding-bottom: 75px;
+
+
+  /* fix image float style: */
+  overflow: auto;
 }
 /* ???? */
 /* #editor-container .ql-editor > * {
