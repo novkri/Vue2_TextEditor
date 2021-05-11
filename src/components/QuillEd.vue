@@ -1,5 +1,5 @@
 <template>
-<div class="wrapper">
+<main class="quill-container">
   <button class="render-btn" @click="renderContent">Render</button>
 
   <div class="quill-wrapper">
@@ -58,13 +58,14 @@
   </div>
 
   <!-- теги make it component -->
-  <div class="chips chips-initial" tabindex="0">
+  <!-- <div class="chips chips-initial" tabindex="0">
     <div class="chip" v-for="chip in chips" :key="chip">
-      {{chip}}
+      <span>{{chip}}</span>
       <i class="close fas fa-times" @click="removeChip(chip)"></i>
     </div>
     <input class="input active" placeholder="" v-model="newChipText" @keyup.enter="addNewChip">
-  </div>
+  </div> -->
+  <Chips :chips="chips" @addNewChip="addNewChip" @removeChip="removeChip" />
 
   
   <div v-if="saved" class="rendered-output">
@@ -76,19 +77,21 @@
       </div>
     </div>
   </div>
-</div>
+</main>
 
 </template>
 
 <script>
 import { Quill } from 'vue-quill-editor'
-
-// ImageResize ломает редактор при выборе alignment картинки
 import ImageResize from 'quill-image-resize-vue';
 Quill.register('modules/imageResize', ImageResize);
 
+import Chips from './Chips'
 
 export default {
+  components: {
+    Chips
+  },
   data () {
     return {
       // for render btn
@@ -112,7 +115,7 @@ export default {
       chips: [
         'Tag 1', 'tag 2', 'Tag 3'
       ],
-      newChipText: ''
+      // newChipText: ''
     }
   },
 
@@ -300,9 +303,8 @@ export default {
       console.log(this.chips);
     },
 
-    addNewChip() {
-      this.chips.push(this.newChipText)
-      this.newChipText = ''
+    addNewChip(newChip) {
+      this.chips.push(newChip)
     },
     removeChip(clickedChip) {
       this.chips = this.chips.filter(chip => chip.toLowerCase() != clickedChip.toLowerCase())
@@ -403,9 +405,10 @@ export default {
 
 <style>
 /* if <style scoped> - styles are not applied */
-.wrapper {
+main.quill-container {
   max-width: 900px;
   margin: auto;
+  font-family: 'Open Sans', Helvetica, sans-serif !important;
 }
 
 .render-btn {
@@ -418,81 +421,6 @@ export default {
   margin-bottom: 10px;
 }
 
-
-/* chips */
-.chips {
-  min-height: 45px;
-  padding: 1rem 0;
-  margin-bottom: 30px;
-  border: 0;
-  border-bottom: 1px solid #ced4da;
-  outline: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  -webkit-transition: all .3s;
-  transition: all .3s;
-}
-
-.chip {
-  display: inline-block;
-  height: 32px;
-  padding: 0 12px;
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-  /* font-size: 13px; */
-  font-weight: 500;
-  line-height: 32px;
-  color: rgba(0,0,0,0.6);
-  cursor: pointer;
-  background-color: #eceff1;
-  border-radius: 16px;
-  -webkit-transition: all .3s linear;
-  transition: all .3s linear;
-}
-
-.chip img {
-  float: left;
-  width: 32px;
-  height: 32px;
-  margin: 0 8px 0 -12px;
-  border-radius: 50%;
-}
-
-.chip .close {
-  float: right;
-  padding-left: 8px;
-  font-size: 16px;
-  line-height: 32px;
-  cursor: pointer;
-  -webkit-transition: all .1s linear;
-  transition: all .1s linear;
-}
-
-.chip .close:hover {
-  /* background-color: #fff; */
-  color: #000;
-}
-.chips .input {
-  display: inline-block;
-  width: 120px !important;
-  height: 32px;
-  padding: 0 !important;
-  margin-right: 20px;
-  /* font-size: 13px; */
-  font-weight: 500;
-  line-height: 32px;
-  color: rgba(0,0,0,0.6);
-  background: 0;
-  border: 0;
-  outline: 0;
-  overflow: visible;
-}
-
-.chips .input:focus {
-  border: 0 !important;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
-}
 
 
 
