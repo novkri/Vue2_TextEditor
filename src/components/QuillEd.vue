@@ -44,6 +44,7 @@
       ref="myQuillEditor"
       v-model="content"
       :options="editorOption"
+      @blur="onEditorBlur($event)"
     />
 
 
@@ -106,7 +107,25 @@ export default {
         placeholder: 'I am a placeholder!',
         modules: {
           imageResize: {
-            modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
+            modules: [ 'Resize', 'DisplaySize', 'Toolbar' ],
+            handleStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white'
+              // other camelCase styles for size display
+            },
+            toolbarStyles: {
+                backgroundColor: 'black',
+                border: 'none',
+                color: 'white'
+                // other camelCase styles for size display
+            },
+            toolbarButtonStyles: {
+                // ...
+            },
+            toolbarButtonSvgStyles: {
+                // ...
+            },
           },
           toolbar: []
         }
@@ -174,10 +193,10 @@ export default {
         // node.setAttribute('alt', value.alt);
         node.setAttribute('src', value.url);
 
-        if (node.width > 750) {
-          node.setAttribute('width', '750px');
+        if (node.width > quill.container.clientWidth) {
+          node.setAttribute('width', quill.container.clientWidth + 'px');
         }
-        node.setAttribute('style', 'display: block; margin: auto;');
+        node.setAttribute('style', `display: block; margin: auto; max-width: ${quill.container.clientWidth}px`);
         return node;
       }
       
@@ -273,20 +292,23 @@ export default {
           // show sidebar button
           let lineBounds = quill.getBounds(range);
 
-          sidebarControls.classList.remove('active')
+          sidebarControls.classList.add('active')
           sidebarControls.style.display = 'flex'
           sidebarControls.style.left = lineBounds.left - 50 + 'px'
           sidebarControls.style.top = lineBounds.top - 8 + 'px'
         } else {
           tooltipControls.style.display = 'none';
-          sidebarControls.style.display = 'none';
-          sidebarControls.classList.remove('active');
+
+          // убирает плюсик сбоку при вводе текста:
+          // sidebarControls.style.display = 'none';
+          // sidebarControls.classList.remove('active');
         }
       } else {
         tooltipControls.style.display = 'none';
-        sidebarControls.style.display = 'none';
 
-        sidebarControls.classList.remove('active');
+        // убирает плюсик сбоку при выделении текста кликом:
+        // sidebarControls.style.display = 'none';
+        // sidebarControls.classList.remove('active');
 
         // show tooltip
         let rangeBounds = quill.getBounds(range);
@@ -299,6 +321,9 @@ export default {
   },
 
   methods: {
+    onEditorBlur() {
+      document.getElementById('sidebar-controls').style.display = 'none';
+    },
     renderContent() {
       this.saved = true
       console.log(this.content);
@@ -313,18 +338,13 @@ export default {
     },
 
     // quill editor methods
-    onShowControlsClick(e) {
-      console.log("click");
-      console.log(e);
+    onShowControlsClick() {
       this.isShowControlsClicked = !this.isShowControlsClicked
-      document.getElementById('show-controls').classList.toggle('active');
+      document.getElementById('sidebar-controls').classList.toggle('active');
       document.getElementById('editor-container').focus()
     },
     closeShowControls() {
-      console.log('close');
       this.isShowControlsClicked = false
-      // document.getElementById('show-controls').classList.toggle('active');
-      // document.getElementById('editor-container').focus()
     },
 
 
@@ -335,23 +355,25 @@ export default {
     },
     uploadImage(e) {
       let img = e.target.files[0]
-      let reader = new FileReader()
-      reader.readAsDataURL(img);
-      let quill = this.editor
 
-      reader.onload = function() {
-        let range = quill.getSelection(true);
-        quill.insertEmbed(range.index, 'image', {
-          url: `${reader.result}`
-        }, Quill.sources.USER);
-        quill.setSelection(range.index + 1, Quill.sources.SILENT);
+      if (img) {
+        let reader = new FileReader()
+        reader.readAsDataURL(img);
+        let quill = this.editor
 
-        document.getElementById('sidebar-controls').style.display = 'none';
-      };
+        reader.onload = function() {
+          let range = quill.getSelection(true);
+          quill.insertEmbed(range.index, 'image', {
+            url: `${reader.result}`
+          }, Quill.sources.USER);
+          // go to next line:
+          quill.setSelection(range.index + 1, Quill.sources.USER);
+        };
 
-      reader.onerror = function() {
-        console.log(reader.error);
-      };
+        reader.onerror = function() {
+          console.log(reader.error);
+        };
+      }
     },
     onVideoClick() {
       let range = this.editor.getSelection(true);
@@ -363,16 +385,16 @@ export default {
       if (url) {
         this.editor.insertEmbed(range.index, 'video', url, Quill.sources.USER);
         this.editor.formatText(range.index + 1, 1, { height: '170', width: '400' });
-        this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
+        this.editor.setSelection(range.index + 1, Quill.sources.USER);
       }
       
-      document.getElementById('sidebar-controls').style.display = 'none';
+      // document.getElementById('sidebar-controls').style.display = 'none';
     },
     onDividerClick() {
       let range = this.editor.getSelection(true);
       this.editor.insertEmbed(range.index, 'divider', true, Quill.sources.USER);
-      this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
-      document.getElementById('sidebar-controls').style.display = 'none';
+      this.editor.setSelection(range.index + 1, Quill.sources.USER);
+      // document.getElementById('sidebar-controls').style.display = 'none';
     },
 
 
