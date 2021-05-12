@@ -302,8 +302,8 @@ export default {
         tooltipControls.style.display = 'none';
 
         // убирает плюсик сбоку при выделении текста кликом:
-        // sidebarControls.style.display = 'none';
-        // sidebarControls.classList.remove('active');
+        sidebarControls.style.display = 'none';
+        sidebarControls.classList.remove('active');
 
         // show tooltip
         let rangeBounds = quill.getBounds(range);
@@ -352,9 +352,9 @@ export default {
       let img = e.target.files[0]
 
       if (img) {
+        
+        // document.getElementById('sidebar-controls').classList.remove('active');
         document.getElementById('sidebar-controls').style.display = 'none';
-        document.getElementById('sidebar-controls').classList.remove('active');
-
 
         let reader = new FileReader()
         reader.readAsDataURL(img);
