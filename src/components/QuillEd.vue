@@ -58,19 +58,12 @@
     </div>
   </div>
 
-  <!-- теги make it component -->
-  <!-- <div class="chips chips-initial" tabindex="0">
-    <div class="chip" v-for="chip in chips" :key="chip">
-      <span>{{chip}}</span>
-      <i class="close fas fa-times" @click="removeChip(chip)"></i>
-    </div>
-    <input class="input active" placeholder="" v-model="newChipText" @keyup.enter="addNewChip">
-  </div> -->
+  <!-- теги -->
   <Chips :chips="chips" @addNewChip="addNewChip" @removeChip="removeChip" />
 
   
   <div v-if="saved" class="rendered-output">
-    <h2>{{textHeader}}</h2>
+    <h2 class="rendered-header">{{textHeader}}</h2>
     <div v-html="content"></div>
     <div class="chips chips-initial" tabindex="0">
       <div class="chip" v-for="chip in chips" :key="chip">
@@ -194,9 +187,9 @@ export default {
         node.setAttribute('src', value.url);
 
         if (node.width > quill.container.clientWidth) {
-          node.setAttribute('width', quill.container.clientWidth + 'px');
+          node.setAttribute('width', quill.container.clientWidth - 30 + 'px');
         }
-        node.setAttribute('style', `display: block; margin: auto; max-width: ${quill.container.clientWidth}px`);
+        node.setAttribute('style', `display: block; margin: auto; max-width: ${quill.container.clientWidth - 30}px`);
         return node;
       }
       
@@ -219,6 +212,8 @@ export default {
         node.setAttribute('src', url);
         node.setAttribute('frameborder', '0');
         node.setAttribute('allowfullscreen', true);
+
+
         if (node.width > 750) {
           node.setAttribute('width', '750px')
         }
@@ -357,6 +352,10 @@ export default {
       let img = e.target.files[0]
 
       if (img) {
+        document.getElementById('sidebar-controls').style.display = 'none';
+        document.getElementById('sidebar-controls').classList.remove('active');
+
+
         let reader = new FileReader()
         reader.readAsDataURL(img);
         let quill = this.editor
@@ -527,6 +526,7 @@ main.quill-container {
   display: none;
   padding: 5px 10px;
   position: absolute;
+  z-index: 10;
 }
 #tooltip-controls::before {
   box-sizing: border-box;
@@ -642,5 +642,24 @@ button:active, button:focus {
 
 #editor-header textarea:focus {
   outline: none;
+}
+
+
+/* output */
+.rendered-output {
+  border: 1px dashed black;
+  padding: 0 20px;
+  font-family: 'Open Sans', Helvetica, sans-serif !important;
+}
+.rendered-output .rendered-header {
+  text-align: center;
+  font-size: 32px;
+  line-height: 42px;
+}
+.rendered-output p {
+  line-height: 1.42;
+}
+.rendered-output .chips.chips-initial {
+  margin-bottom: 5px;
 }
 </style>
