@@ -287,16 +287,18 @@ export default {
           // show sidebar button
           let lineBounds = quill.getBounds(range);
 
-          sidebarControls.classList.add('active')
+          sidebarControls.classList.remove('active')
           sidebarControls.style.display = 'flex'
           sidebarControls.style.left = lineBounds.left - 50 + 'px'
           sidebarControls.style.top = lineBounds.top - 8 + 'px'
+
+          console.log('x');
         } else {
           tooltipControls.style.display = 'none';
 
           // убирает плюсик сбоку при вводе текста:
-          // sidebarControls.style.display = 'none';
-          // sidebarControls.classList.remove('active');
+          sidebarControls.style.display = 'none';
+          sidebarControls.classList.remove('active');
         }
       } else {
         tooltipControls.style.display = 'none';
@@ -353,21 +355,23 @@ export default {
 
       if (img) {
         
-        // document.getElementById('sidebar-controls').classList.remove('active');
-        document.getElementById('sidebar-controls').style.display = 'none';
-
         let reader = new FileReader()
         reader.readAsDataURL(img);
         let quill = this.editor
+
+
 
         reader.onload = function() {
           let range = quill.getSelection(true);
           quill.insertEmbed(range.index, 'image', {
             url: `${reader.result}`
           }, Quill.sources.USER);
+          
+
           // go to next line:
-          quill.setSelection(range.index + 1, Quill.sources.USER);
+          quill.setSelection(range.index + 1, Quill.sources.SILENT)
         };
+
 
         reader.onerror = function() {
           console.log(reader.error);
