@@ -370,6 +370,7 @@ export default {
 
           // go to next line:
           quill.setSelection(range.index + 1, Quill.sources.SILENT)
+          document.getElementById('sidebar-controls').style.display = 'none';
         };
 
 
