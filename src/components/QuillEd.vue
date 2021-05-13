@@ -28,7 +28,7 @@
       </button>
       <span class="controls" v-show="isShowControlsClicked">
         <button @mousedown="onImageBtnClick"><i class="fa fa-camera"></i></button>
-        <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;">
+        <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;" accept="image/*">
         <button id="video-button" @mousedown="onVideoClick"><i class="fa fa-play"></i></button>
         <button id="divider-button" @mousedown="onDividerClick"><i class="fa fa-minus"></i></button>
       </span>
@@ -51,7 +51,7 @@
     <div id="bottom-menu">
       <span class="controls">
         <button @click="onImageBtnClick"><i class="fa fa-camera"></i></button>
-        <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;">
+        <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;" accept="image/*">
         <button id="video-button" @click="onVideoClick"><i class="fa fa-play"></i></button>
         <button id="divider-button" @click="onDividerClick"><i class="fa fa-minus"></i></button>
       </span>
@@ -64,7 +64,7 @@
   
   <div v-if="saved" class="rendered-output">
     <h2 class="rendered-header">{{textHeader}}</h2>
-    <div v-html="content"></div>
+    <div v-html="content" class="render-content"></div>
     <div class="chips chips-initial" tabindex="0">
       <div class="chip" v-for="chip in chips" :key="chip">
         {{chip}}
@@ -81,6 +81,7 @@ import ImageResize from 'quill-image-resize-vue';
 Quill.register('modules/imageResize', ImageResize);
 
 import Chips from './Chips'
+
 
 export default {
   components: {
@@ -100,7 +101,7 @@ export default {
         placeholder: 'I am a placeholder!',
         modules: {
           imageResize: {
-            modules: [ 'Resize', 'DisplaySize', 'Toolbar' ],
+            // modules: ['Resize', 'DisplaySize', 'Toolbar' ],
             handleStyles: {
               backgroundColor: 'black',
               border: 'none',
@@ -214,9 +215,9 @@ export default {
         node.setAttribute('allowfullscreen', true);
 
 
-        if (node.width > 750) {
-          node.setAttribute('width', '750px')
-        }
+        // if (node.width > 750) {
+        //   node.setAttribute('width', '750px')
+        // }
         return node;
       }
       
@@ -361,6 +362,7 @@ export default {
 
         reader.onload = function() {
           let range = quill.getSelection(true);
+
           quill.insertEmbed(range.index, 'image', {
             url: `${reader.result}`
           }, Quill.sources.USER);
@@ -370,11 +372,14 @@ export default {
           quill.setSelection(range.index + 1, Quill.sources.USER)
 
           document.getElementById('sidebar-controls').style.display = 'none';
-          // quill.blur();
+
+          // ??????
+          quill.blur();
 
           e.target.value = "";
         };
 
+        // render.
 
         reader.onerror = function() {
           console.log(reader.error);
@@ -472,7 +477,7 @@ main.quill-container {
 .quill-wrapper {
   border: 1px solid rgba(65, 65, 65, 0.2);
   padding: 30px 45px;
-  max-width: 750px;
+  max-width: 800px;
 }
 
 .quill-editor {
@@ -645,6 +650,7 @@ button:active, button:focus {
   resize: none;
   overflow: hidden;
   border: none;
+  width: 100%;
 }
 
 #editor-header textarea:focus {
@@ -657,14 +663,27 @@ button:active, button:focus {
   border: 1px dashed black;
   padding: 0 20px;
   font-family: 'Open Sans', Helvetica, sans-serif !important;
+  overflow: auto;
 }
 .rendered-output .rendered-header {
   text-align: center;
   font-size: 32px;
   line-height: 42px;
 }
+.rendered-header textarea {
+  width: 100%;
+}
+
+.render-content {
+  overflow: auto;
+}
+
 .rendered-output p {
   line-height: 1.42;
+}
+.rendered-output img:not([width]) {
+  max-width: unset !important;
+  width: 100% !important;
 }
 .rendered-output .chips.chips-initial {
   margin-bottom: 5px;
