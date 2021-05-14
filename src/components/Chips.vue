@@ -1,22 +1,69 @@
 <template>
-  <div class="chips chips-initial" tabindex="0">
+  <v-card-text>
+    <v-chip-group
+      column
+    >
+    <v-chip v-for="chip in chips" :key="chip"
+      close
+      @click:close="$emit('removeChip', chip)"
+    >
+      <strong>{{ chip }}</strong>&nbsp;
+    </v-chip>
+    </v-chip-group>
+    
+    <v-text-field v-model="newChipText" @keyup.enter="onChipAdd"
+      label="Solo"
+      placeholder="Placeholder"
+      clearable
+    ></v-text-field>
+  </v-card-text>
+
+
+  <!-- <v-card-text>
+    <v-combobox
+      v-model="chips"
+      :items="items"
+      chips
+      clearable
+      label="Your favorite hobbies"
+      multiple
+      prepend-icon="mdi-filter-variant"
+      solo
+    >
+      <template v-slot:selection="{ attrs, item, select, selected }">
+        <v-chip
+          v-bind="attrs"
+          :input-value="selected"
+          close
+          @click:close="$emit('removeChip', item)"
+        >
+          <strong>{{ item }}</strong>&nbsp;
+          <span>(interest)</span>
+        </v-chip>
+      </template>
+    </v-combobox>
+  </v-card-text> -->
+
+
+  <!-- <div class="chips chips-initial" tabindex="0">
     <div class="chip" v-for="chip in chips" :key="chip">
       <span>{{chip}}</span>
       <i class="close fas fa-times" @click="$emit('removeChip', chip)"></i>
     </div>
     <input class="input active" placeholder="" v-model="newChipText" @keyup.enter="onChipAdd">
-  </div>
+  </div> -->
 </template>
 
 <script>
 export default {
   name: 'chips-component',
   props: {
-    chips: Array
+    chips: Array,
+    items: Array
   },
   data() {
     return {
-      newChipText: ''
+      newChipText: '',
     }
   },
   methods: {
@@ -30,12 +77,11 @@ export default {
 
 <style>
 /* chips */
-.chips {
+/* .chips {
   min-height: 45px;
   padding: 1rem 0;
   margin-bottom: 30px;
   border: 0;
-  /* border-bottom: 1px solid #ced4da; */
   outline: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -49,7 +95,6 @@ export default {
   padding: 0 12px;
   margin-right: 1rem;
   margin-bottom: 0.5rem;
-  /* font-size: 13px; */
   font-weight: 500;
   line-height: 32px;
   color: rgba(0,0,0,0.6);
@@ -79,7 +124,6 @@ export default {
 }
 
 .chip .close:hover {
-  /* background-color: #fff; */
   color: #000;
 }
 .chips .input {
@@ -88,7 +132,6 @@ export default {
   height: 32px;
   padding: 0 !important;
   margin-right: 20px;
-  /* font-size: 13px; */
   font-weight: 500;
   line-height: 32px;
   color: rgba(0,0,0,0.6);
@@ -102,5 +145,5 @@ export default {
   border: 0 !important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
-}
+} */
 </style>

@@ -1,36 +1,73 @@
 <template>
-<main class="quill-container">
-  <button class="render-btn" @click="renderContent">Render</button>
+<v-main class="quill-container">
+  <v-btn class="render-btn" @click="renderContent">Render</v-btn>
 
-  <div class="quill-wrapper">
+  <v-card  elevation="3" outlined class="quill-wrapper">
     <!-- меню по клику на текст -->
     <!-- тултипы при наведении на кнопки -->
     <div id="tooltip-controls">
-      <button id="bold-button" @click="onBoldClick"><i class="fa fa-bold"></i></button>
-      <button id="italic-button" @click="onItalicClick"><i class="fa fa-italic"></i></button>
-      <button id="underline-button" @click="onUnderlineClick"><i class="fa fa-underline"></i></button>
+      <v-btn icon color="white" id="bold-button" @click="onBoldClick"><v-icon>fa-bold</v-icon> 
+        <!-- <i class="fa fa-bold"></i> -->
+      </v-btn>
+      <v-btn icon color="white" id="italic-button" @click="onItalicClick"><v-icon>fa-italic</v-icon>
+        <!-- <i class="fa fa-italic"></i> -->
+      </v-btn>
+      <v-btn icon color="white" id="underline-button" @click="onUnderlineClick"><v-icon>fa-underline</v-icon>
+        <!-- <i class="fa fa-underline"></i> -->
+      </v-btn>
 
       <!-- some divider here, add classes in css later -->
-      <div class="divider-line" style="height: auto; background-color: white; width: 1px; margin: 0 2px;"></div>
+      <!-- <div class="divider-line" style="height: auto; background-color: white; width: 1px; margin: 0 2px;"></div> -->
+      <!-- <v-divider
+        dark
+        vertical
+      ></v-divider> -->
 
       <!-- + цвет текста, цвет фона? цитата, варавнивание, ссылка мб-->
-      <button id="link-button" @click="onLinkClick"><i class="fa fa-link"></i></button>
-      <button id="blockquote-button" @click="onBlockquoteClick"><i class="fa fa-quote-right"></i></button>
-      <button id="header-1-button" @click="onHeaderOneClick"><i class="fa fa-heading"><sub>1</sub></i></button>
-      <button id="header-2-button" @click="onHeaderTwoClick"><i class="fa fa-heading"><sub>2</sub></i></button>
+      <v-btn icon color="white" id="link-button" @click="onLinkClick">
+        <!-- <i class="fa fa-link"></i> -->
+        <v-icon>fa-link</v-icon> 
+      </v-btn>
+      <v-btn icon color="white" id="blockquote-button" @click="onBlockquoteClick">
+        <!-- <i class="fa fa-quote-right"></i> -->
+        <v-icon>fa-quote-right</v-icon> 
+      </v-btn>
+      <v-btn icon color="white" id="header-1-button" @click="onHeaderOneClick">
+        <!-- <i class="fa fa-heading"><sub>1</sub></i> -->
+        <v-icon>fa-heading<sub>1</sub></v-icon> 
+      </v-btn>
+      <v-btn icon color="white" id="header-2-button" @click="onHeaderTwoClick">
+        <!-- <i class="fa fa-heading"><sub>2</sub></i> -->
+        <v-icon>fa-heading<sub>2</sub></v-icon> 
+      </v-btn>
     </div>
 
     <!-- меню при переходе на новую строку  @blur="closeShowControls"-->
     <div id="sidebar-controls" >
-      <button id="show-controls" @click="onShowControlsClick" @blur="closeShowControls" >
+      <!-- <button id="show-controls" @click="onShowControlsClick" @blur="closeShowControls" >
         <i v-if="!isShowControlsClicked" class="fa fa-plus"></i>
         <i v-else class="fa fa-times"></i>
-      </button>
+      </button> -->
+
+      <v-btn icon color="pink" id="show-controls">
+        <v-icon v-if="!isShowControlsClicked" @click="onShowControlsClick" @blur="closeShowControls">fa-plus</v-icon>
+        <v-icon v-else @click="onShowControlsClick" @blur="closeShowControls">fa-times</v-icon>
+      </v-btn>
+
       <span class="controls" v-show="isShowControlsClicked">
-        <button @mousedown="onImageBtnClick"><i class="fa fa-camera"></i></button>
+        <v-btn icon color="grey" @mousedown="onImageBtnClick">
+          <!-- <i class="fa fa-camera"></i> -->
+          <v-icon>fa-camera</v-icon>
+        </v-btn>
         <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;" accept="image/*">
-        <button id="video-button" @mousedown="onVideoClick"><i class="fa fa-play"></i></button>
-        <button id="divider-button" @mousedown="onDividerClick"><i class="fa fa-minus"></i></button>
+        <v-btn icon color="grey" id="video-button" @mousedown="onVideoClick">
+          <!-- <i class="fa fa-play"></i> -->
+          <v-icon>fa-play</v-icon>
+        </v-btn>
+        <v-btn icon color="grey" id="divider-button" @mousedown="onDividerClick">
+          <!-- <i class="fa fa-minus"></i> -->
+          <v-icon>fa-minus</v-icon>
+        </v-btn>
       </span>
     </div>
 
@@ -48,19 +85,31 @@
     />
 
 
-    <div id="bottom-menu">
+    <v-card-actions id="bottom-menu" class="py-6">
       <span class="controls">
-        <button @click="onImageBtnClick"><i class="fa fa-camera"></i></button>
+        <v-btn icon color="grey darken-3" @click="onImageBtnClick">
+          <!-- <i class="fa fa-camera"></i> -->
+          <v-icon>fa-camera</v-icon>
+        </v-btn>
         <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;" accept="image/*">
-        <button id="video-button" @click="onVideoClick"><i class="fa fa-play"></i></button>
-        <button id="divider-button" @click="onDividerClick"><i class="fa fa-minus"></i></button>
+        <v-btn icon color="grey darken-3" id="video-button" @click="onVideoClick">
+          <!-- <i class="fa fa-play"></i> -->
+          <v-icon>fa-play</v-icon>
+        </v-btn>
+        <v-btn icon color="grey darken-3" id="divider-button" @click="onDividerClick">
+          <!-- <i class="fa fa-minus"></i> -->
+          <v-icon>fa-minus</v-icon>
+        </v-btn>
       </span>
-    </div>
-  </div>
+    </v-card-actions>
+    <!-- </v-card> -->
 
-  <!-- теги -->
-  <Chips :chips="chips" @addNewChip="addNewChip" @removeChip="removeChip" />
+    <!-- теги -->
+    <Chips :chips="chips" :items="items" @addNewChip="addNewChip" @removeChip="removeChip" />
+  </v-card>
 
+
+  
   
   <div v-if="saved" class="rendered-output">
     <h2 class="rendered-header">{{textHeader}}</h2>
@@ -71,7 +120,7 @@
       </div>
     </div>
   </div>
-</main>
+</v-main>
 
 </template>
 
@@ -126,9 +175,8 @@ export default {
       },
 
       // chips
-      chips: [
-        'Tag 1', 'tag 2', 'Tag 3'
-      ],
+      chips: ['Tag 1', 'tag 2', 'Tag 3'],
+      items: ['Streaming', 'Eating'],
       // newChipText: ''
     }
   },
@@ -331,11 +379,15 @@ export default {
     },
     removeChip(clickedChip) {
       this.chips = this.chips.filter(chip => chip.toLowerCase() != clickedChip.toLowerCase())
+      // this.chips.splice(this.chips.indexOf(clickedChip), 1)
+      // this.chips = [...this.chips]
     },
 
     // quill editor methods
     onShowControlsClick() {
+      
       this.isShowControlsClicked = !this.isShowControlsClicked
+
       document.getElementById('sidebar-controls').classList.toggle('active');
       document.getElementById('editor-container').focus()
     },
@@ -449,7 +501,8 @@ export default {
 <style>
 /* if <style scoped> - styles are not applied */
 main.quill-container {
-  max-width: 900px;
+  /* max-width: 900px; */
+  width: 900px;
   margin: auto;
   font-family: 'Open Sans', Helvetica, sans-serif !important;
 }
@@ -476,8 +529,8 @@ main.quill-container {
 /* //////// */
 .quill-wrapper {
   border: 1px solid rgba(65, 65, 65, 0.2);
-  padding: 30px 45px;
-  max-width: 800px;
+  padding: 30px 45px 15px 45px;
+  /* max-width: 800px; */
 }
 
 .quill-editor {
@@ -527,6 +580,7 @@ main.quill-container {
   color: #111;
   letter-spacing: 1em;
   text-align: center;
+  height: 100%;
 }
 #editor-container hr:before {
   content: '...';
@@ -625,21 +679,6 @@ button:active, button:focus {
   outline: none;
 }
 
-/* bottom-menu */
-#bottom-menu {
-  padding-top: 0;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-#bottom-menu button {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-}
-#bottom-menu button:hover {
-  background-color: rgb(234 234 234);
-}
 
 /* editor-header */
 #editor-header textarea {
