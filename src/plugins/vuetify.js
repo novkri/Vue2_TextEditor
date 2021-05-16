@@ -20,7 +20,7 @@ export default new Vuetify({
     current: "ru",
   },
   icons: {
-    iconfont: 'fa',
+    iconfont: 'mdi',
   },
   
 });
