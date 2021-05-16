@@ -43,15 +43,6 @@
       </template>
     </v-combobox>
   </v-card-text> -->
-
-
-  <!-- <div class="chips chips-initial" tabindex="0">
-    <div class="chip" v-for="chip in chips" :key="chip">
-      <span>{{chip}}</span>
-      <i class="close fas fa-times" @click="$emit('removeChip', chip)"></i>
-    </div>
-    <input class="input active" placeholder="" v-model="newChipText" @keyup.enter="onChipAdd">
-  </div> -->
 </template>
 
 <script>

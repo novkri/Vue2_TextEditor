@@ -4,17 +4,10 @@
 
   <v-card  elevation="3" outlined class="quill-wrapper">
     <!-- меню по клику на текст -->
-    <!-- тултипы при наведении на кнопки -->
     <div id="tooltip-controls">
-      <v-btn icon color="white" id="bold-button" @click="onBoldClick"><v-icon>fa-bold</v-icon> 
-        <!-- <i class="fa fa-bold"></i> -->
-      </v-btn>
-      <v-btn icon color="white" id="italic-button" @click="onItalicClick"><v-icon>fa-italic</v-icon>
-        <!-- <i class="fa fa-italic"></i> -->
-      </v-btn>
-      <v-btn icon color="white" id="underline-button" @click="onUnderlineClick"><v-icon>fa-underline</v-icon>
-        <!-- <i class="fa fa-underline"></i> -->
-      </v-btn>
+      <TooltipedButton btnColor="white" @handleBtnClick="onBoldClick" tooltipText="Жирный" iconName="mdi-format-bold" />
+      <TooltipedButton btnColor="white" @handleBtnClick="onItalicClick" tooltipText="Курсив" iconName="mdi-format-italic" />
+      <TooltipedButton btnColor="white" @handleBtnClick="onUnderlineClick" tooltipText="Подчеркнутый" iconName="mdi-format-underline" />
 
       <!-- some divider here, add classes in css later -->
       <!-- <div class="divider-line" style="height: auto; background-color: white; width: 1px; margin: 0 2px;"></div> -->
@@ -23,51 +16,26 @@
         vertical
       ></v-divider> -->
 
-      <!-- + цвет текста, цвет фона? цитата, варавнивание, ссылка мб-->
-      <v-btn icon color="white" id="link-button" @click="onLinkClick">
-        <!-- <i class="fa fa-link"></i> -->
-        <v-icon>fa-link</v-icon> 
-      </v-btn>
-      <v-btn icon color="white" id="blockquote-button" @click="onBlockquoteClick">
-        <!-- <i class="fa fa-quote-right"></i> -->
-        <v-icon>fa-quote-right</v-icon> 
-      </v-btn>
-      <v-btn icon color="white" id="header-1-button" @click="onHeaderOneClick">
-        <!-- <i class="fa fa-heading"><sub>1</sub></i> -->
-        <v-icon>fa-heading<sub>1</sub></v-icon> 
-      </v-btn>
-      <v-btn icon color="white" id="header-2-button" @click="onHeaderTwoClick">
-        <!-- <i class="fa fa-heading"><sub>2</sub></i> -->
-        <v-icon>fa-heading<sub>2</sub></v-icon> 
-      </v-btn>
+      <!-- + цвет текста, цвет фона? цитата, выравнивание, ссылка мб-->
+       <TooltipedButton btnColor="white" @handleBtnClick="onLinkClick" tooltipText="Ссылка" iconName="mdi-link" />
+       <TooltipedButton btnColor="white" @handleBtnClick="onBlockquoteClick" tooltipText="Цитата" iconName="mdi-format-quote-close" />
+       <TooltipedButton btnColor="white" @handleBtnClick="onHeaderOneClick" tooltipText="Заголовок 1" iconName="mdi-format-header-1" />
+       <TooltipedButton btnColor="white" @handleBtnClick="onHeaderTwoClick" tooltipText="Заголовок 2" iconName="mdi-format-header-2" />
     </div>
+
 
     <!-- меню при переходе на новую строку  @blur="closeShowControls"-->
     <div id="sidebar-controls" >
-      <!-- <button id="show-controls" @click="onShowControlsClick" @blur="closeShowControls" >
-        <i v-if="!isShowControlsClicked" class="fa fa-plus"></i>
-        <i v-else class="fa fa-times"></i>
-      </button> -->
-
       <v-btn icon color="pink" id="show-controls">
-        <v-icon v-if="!isShowControlsClicked" @click="onShowControlsClick" @blur="closeShowControls">fa-plus</v-icon>
-        <v-icon v-else @click="onShowControlsClick" @blur="closeShowControls">fa-times</v-icon>
+        <v-icon v-if="!isShowControlsClicked" @click="onShowControlsClick" @blur="closeShowControls">mdi-plus</v-icon>
+        <v-icon v-else @click="onShowControlsClick" @blur="closeShowControls">mdi-close</v-icon>
       </v-btn>
 
       <span class="controls" v-show="isShowControlsClicked">
-        <v-btn icon color="grey" @mousedown="onImageBtnClick">
-          <!-- <i class="fa fa-camera"></i> -->
-          <v-icon>fa-camera</v-icon>
-        </v-btn>
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onImageBtnClick" tooltipText="Фото" iconName="mdi-camera" />
         <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;" accept="image/*">
-        <v-btn icon color="grey" id="video-button" @mousedown="onVideoClick">
-          <!-- <i class="fa fa-play"></i> -->
-          <v-icon>fa-play</v-icon>
-        </v-btn>
-        <v-btn icon color="grey" id="divider-button" @mousedown="onDividerClick">
-          <!-- <i class="fa fa-minus"></i> -->
-          <v-icon>fa-minus</v-icon>
-        </v-btn>
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onVideoClick" tooltipText="Видео" iconName="mdi-play" />
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onDividerClick" tooltipText="Разделитель" iconName="mdi-minus" />
       </span>
     </div>
 
@@ -87,22 +55,12 @@
 
     <v-card-actions id="bottom-menu" class="py-6">
       <span class="controls">
-        <v-btn icon color="grey darken-3" @click="onImageBtnClick">
-          <!-- <i class="fa fa-camera"></i> -->
-          <v-icon>fa-camera</v-icon>
-        </v-btn>
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onImageBtnClick" tooltipText="Фото" iconName="mdi-camera" />
         <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;" accept="image/*">
-        <v-btn icon color="grey darken-3" id="video-button" @click="onVideoClick">
-          <!-- <i class="fa fa-play"></i> -->
-          <v-icon>fa-play</v-icon>
-        </v-btn>
-        <v-btn icon color="grey darken-3" id="divider-button" @click="onDividerClick">
-          <!-- <i class="fa fa-minus"></i> -->
-          <v-icon>fa-minus</v-icon>
-        </v-btn>
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onVideoClick" tooltipText="Видео" iconName="mdi-play" />
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onDividerClick" tooltipText="Разделитель" iconName="mdi-minus" />
       </span>
     </v-card-actions>
-    <!-- </v-card> -->
 
     <!-- теги -->
     <Chips :chips="chips" :items="items" @addNewChip="addNewChip" @removeChip="removeChip" />
@@ -132,11 +90,13 @@ import ImageResize from 'quill-image-resize-vue';
 Quill.register('modules/imageResize', ImageResize);
 
 import Chips from './Chips'
+import TooltipedButton from './TooitipForBtn'
 
 
 export default {
   components: {
-    Chips
+    Chips,
+    TooltipedButton,
   },
   data () {
     return {
@@ -633,15 +593,6 @@ main.quill-container {
 }
 
 
-#sidebar-controls i.fa, .menu i.fa {
-  background-color: #fff;
-  border: 1px solid rgb(65, 65, 65);
-  border-radius: 50%;
-  color: rgb(65, 65, 65);
-  width: 27px;
-  height: 27px;
-  line-height: 27px;
-}
 #sidebar-controls .controls, .menu .controls {
   /* display: none; */
   /* margin-left: 15px; */
@@ -656,14 +607,6 @@ main.quill-container {
   margin: 0;
 }
 
-#sidebar-controls .controls button:hover, #sidebar-controls .controls button:hover i.fa {
-  background-color: rgb(234 234 234);
-}
-
-#sidebar-controls .controls i.fa {
-  border: none;
-  border-radius: 0;
-}
 #sidebar-controls.active .controls {
   display: inline-block;
 }
@@ -682,6 +625,7 @@ button:active, button:focus {
 }
 
 
+
 /* editor-header */
 #editor-header textarea {
   padding: 0 15px;
@@ -697,6 +641,7 @@ button:active, button:focus {
 #editor-header textarea:focus {
   outline: none;
 }
+
 
 
 /* output */
