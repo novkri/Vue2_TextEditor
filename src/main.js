@@ -9,15 +9,6 @@ import VueQuillEditor from 'vue-quill-editor'
 Vue.use(VueQuillEditor)
 
 
-
-import { TiptapVuetifyPlugin } from 'tiptap-vuetify'
-
-Vue.use(TiptapVuetifyPlugin, {
-  vuetify,
-  iconsGroup: 'fa'
-})
-
-
 new Vue({
   vuetify,
   render: h => h(App),
