@@ -16,11 +16,12 @@
         vertical
       ></v-divider> -->
 
-      <!-- + цвет текста, цвет фона? цитата, выравнивание, ссылка мб-->
-       <TooltipedButton btnColor="white" @handleBtnClick="onLinkClick" tooltipText="Ссылка" iconName="mdi-link" />
-       <TooltipedButton btnColor="white" @handleBtnClick="onBlockquoteClick" tooltipText="Цитата" iconName="mdi-format-quote-close" />
-       <TooltipedButton btnColor="white" @handleBtnClick="onHeaderOneClick" tooltipText="Заголовок 1" iconName="mdi-format-header-1" />
-       <TooltipedButton btnColor="white" @handleBtnClick="onHeaderTwoClick" tooltipText="Заголовок 2" iconName="mdi-format-header-2" />
+      <TooltipedButton btnColor="white" @handleBtnClick="onLinkClick" tooltipText="Ссылка" iconName="mdi-link" />
+      <TooltipedButton btnColor="white" @handleBtnClick="onBlockquoteClick" tooltipText="Цитата" iconName="mdi-format-quote-close" />
+      <TooltipedButton btnColor="white" @handleBtnClick="onHeaderOneClick" tooltipText="Заголовок 1" iconName="mdi-format-header-1" />
+      <TooltipedButton btnColor="white" @handleBtnClick="onHeaderTwoClick" tooltipText="Заголовок 2" iconName="mdi-format-header-2" />
+
+      <TooltipedButton btnColor="white" @handleBtnClick="onBlockClick" tooltipText="Отменить изменения" iconName="mdi-undo-variant" />
     </div>
 
 
@@ -36,6 +37,8 @@
         <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;" accept="image/*">
         <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onVideoClick" tooltipText="Видео" iconName="mdi-play" />
         <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onDividerClick" tooltipText="Разделитель" iconName="mdi-minus" />
+
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onBlockClick" tooltipText="Отменить изменения" iconName="mdi-undo-variant" />
       </span>
     </div>
 
@@ -59,6 +62,9 @@
         <input type="file" id="image-button" name="filename" @change="uploadImage" style="display:none;" accept="image/*">
         <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onVideoClick" tooltipText="Видео" iconName="mdi-play" />
         <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onDividerClick" tooltipText="Разделитель" iconName="mdi-minus" />
+
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onBlockquoteClick" tooltipText="Цитата" iconName="mdi-format-quote-close" />
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onBlockClick" tooltipText="Отменить изменения" iconName="mdi-undo-variant" />
       </span>
     </v-card-actions>
 
@@ -100,6 +106,7 @@ export default {
   },
   data () {
     return {
+      currentTextFormat: '',
       // for render btn
       saved: false,
 
@@ -301,7 +308,7 @@ export default {
           sidebarControls.classList.remove('active')
           sidebarControls.style.display = 'flex'
           sidebarControls.style.left = lineBounds.left - 50 + 'px'
-          sidebarControls.style.top = lineBounds.top - 11 + 'px'
+          sidebarControls.style.top = lineBounds.top - 6 + 'px'
         } else {
           tooltipControls.style.display = 'none';
 
@@ -425,13 +432,32 @@ export default {
 
     // tooltip buttons methods
     onBoldClick() {
-      this.editor.format('bold', true);
+      if (this.currentTextFormat === 'bold') {
+        this.editor.format('bold', false)
+        this.currentTextFormat = 'block'
+      } else {
+        this.editor.format('bold', true);
+        this.currentTextFormat = 'bold'
+      }
     },
     onItalicClick() {
-      this.editor.format('italic', true);
+      if (this.currentTextFormat === 'italic') {
+        this.editor.format('italic', true)
+          this.currentTextFormat = 'block'
+      } else {
+        this.editor.format('italic', true);
+        this.currentTextFormat = 'italic'
+      }
     },
+
     onUnderlineClick() {
-      this.editor.format('underline', true);
+      if (this.currentTextFormat === 'underline') {
+        this.editor.format('underline', true)
+        this.currentTextFormat = 'block'
+      } else {
+        this.editor.format('underline', true);
+        this.currentTextFormat = 'underline'
+      }
     },
 
     // TODO: link обработчик ?
@@ -441,7 +467,16 @@ export default {
     },
 
     onBlockquoteClick() {
-      this.editor.format('blockquote', true);
+      if (this.currentTextFormat === 'blockquote') {
+        this.editor.format('block', true)
+        this.currentTextFormat = 'block'
+      } else {
+        this.editor.format('blockquote', true);
+        this.currentTextFormat = 'blockquote'
+      }
+    },
+    onBlockClick() {
+      this.editor.format('block', true)
     },
     onHeaderOneClick() {
       this.editor.format('header', 1);
@@ -482,17 +517,10 @@ main.quill-container {
 
 
 
-
-
-
-
-
-
 /* //////// */
 .quill-wrapper {
   border: 1px solid rgba(65, 65, 65, 0.2);
   padding: 30px 45px 15px 45px;
-  /* max-width: 800px; */
 }
 
 .quill-editor {
@@ -504,11 +532,9 @@ main.quill-container {
 }
 .ql-container {
   font-size: 1.2rem !important;
-  font-family: 'Open Sans', Helvetica, sans-serif !important;
 }
 
 #editor-container {
-  font-family: 'Open Sans', Helvetica, sans-serif !important;
   font-size: 1.2em !important;
   height: 100%;
 }
@@ -518,14 +544,10 @@ main.quill-container {
   overflow-y: inherit;
   padding-bottom: 75px;
 
-
-  /* fix image float style: */
+  /* to fix image float style: */
   overflow: auto;
 }
-/* ???? */
-/* #editor-container .ql-editor > * {
-  margin-top: 1.5em;
-} */
+
 #editor-container .ql-editor > *:last-child {
   margin-bottom: 50px;
 }
@@ -543,9 +565,11 @@ main.quill-container {
   letter-spacing: 1em;
   text-align: center;
   height: 100%;
+  width: 100%;
 }
 #editor-container hr:before {
-  content: '...';
+  content: '***';
+  /* repeat just line ? */  
 }
 
 #tooltip-controls {
@@ -571,37 +595,20 @@ main.quill-container {
   top: 0;
   width: 6px;
 }
-#tooltip-controls button {
-  background-color: transparent;
-  color: #fff;
-  border: none;
-}
-#tooltip-controls button.active {
-  color: #21b384;
-}
+
 
 #sidebar-controls {
   display: none;
   position: absolute;
 }
-#sidebar-controls button, .menu button {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-
-  margin: 7px 0px;
-}
 
 
 #sidebar-controls .controls, .menu .controls {
-  /* display: none; */
-  /* margin-left: 15px; */
-
   margin-left: 5px;
   border: 1px solid #ededed;
-  padding: 5px 8px;
+  padding: 6px 8px 4px 8px;
   background-color: #fff;
-  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 20%);
 }
 #sidebar-controls .controls button, .menu .controls button {
   margin: 0;
@@ -609,19 +616,6 @@ main.quill-container {
 
 #sidebar-controls.active .controls {
   display: inline-block;
-}
-
-button {
-  cursor: pointer;
-  display: inline-block;
-  font-size: 18px;
-  padding: 0;
-  height: 32px;
-  width: 32px;
-  text-align: center;
-}
-button:active, button:focus {
-  outline: none;
 }
 
 
