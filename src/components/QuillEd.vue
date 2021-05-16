@@ -114,11 +114,13 @@
   <div v-if="saved" class="rendered-output">
     <h2 class="rendered-header">{{textHeader}}</h2>
     <div v-html="content" class="render-content"></div>
-    <div class="chips chips-initial" tabindex="0">
-      <div class="chip" v-for="chip in chips" :key="chip">
-        {{chip}}
-      </div>
-    </div>
+    <v-chip-group
+      column
+    >
+      <v-chip v-for="chip in chips" :key="chip">
+        <strong>{{ chip }}</strong>&nbsp;
+      </v-chip>
+    </v-chip-group>
   </div>
 </v-main>
 
@@ -339,7 +341,7 @@ export default {
           sidebarControls.classList.remove('active')
           sidebarControls.style.display = 'flex'
           sidebarControls.style.left = lineBounds.left - 50 + 'px'
-          sidebarControls.style.top = lineBounds.top - 8 + 'px'
+          sidebarControls.style.top = lineBounds.top - 11 + 'px'
         } else {
           tooltipControls.style.display = 'none';
 
