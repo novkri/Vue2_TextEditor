@@ -63,7 +63,16 @@
         <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onVideoClick" tooltipText="Видео" iconName="mdi-play" />
         <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onDividerClick" tooltipText="Разделитель" iconName="mdi-minus" />
 
+
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onBoldClick" tooltipText="Жирный" iconName="mdi-format-bold" />
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onItalicClick" tooltipText="Курсив" iconName="mdi-format-italic" />
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onUnderlineClick" tooltipText="Подчеркнутый" iconName="mdi-format-underline" />
+
+
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onLinkClick" tooltipText="Ссылка" iconName="mdi-link" />
         <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onBlockquoteClick" tooltipText="Цитата" iconName="mdi-format-quote-close" />
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onHeaderOneClick" tooltipText="Заголовок 1" iconName="mdi-format-header-1" />
+        <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onHeaderTwoClick" tooltipText="Заголовок 2" iconName="mdi-format-header-2" />
         <TooltipedButton btnColor="grey darken-3" @handleBtnClick="onBlockClick" tooltipText="Отменить изменения" iconName="mdi-undo-variant" />
       </span>
     </v-card-actions>

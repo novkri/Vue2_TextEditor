@@ -12,7 +12,7 @@
     </v-chip-group>
     
     <v-text-field v-model="newChipText" @keyup.enter="onChipAdd"
-      label="Solo"
+      label="Tag Placeholder"
       placeholder="Placeholder"
       clearable
     ></v-text-field>
